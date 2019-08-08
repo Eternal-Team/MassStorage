@@ -1,0 +1,10 @@
+ItemName.Barrel=Barrel
+ItemName.HyperCube=Hyper Cube
+ItemName.PortableHyperCube=Portable Hyper Cube
+
+ItemTooltip.Barrel=Storing dinosaurs since 2019
+ItemTooltip.HyperCube=Stores items in the 4th dimension
+ItemTooltip.PortableHyperCube=What could go wrong?
+
+MapObject.Barrel=Barrel
+MapObject.HyperCube=Hyper Cube
