@@ -1,108 +1,280 @@
-﻿//using MassStorage.TileEntities;
-//using System.Collections.Generic;
-//using System.Globalization;
-//using System.IO;
-//using System.Linq;
-//using Terraria;
-//using Terraria.ID;
-//using Terraria.ModLoader;
-//using Terraria.ModLoader.IO;
+﻿using MassStorage.Items.Upgrades;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-//namespace MassStorage.Items
-//{
-//	public class StackUpgrade : BaseUpgrade
-//	{
-//		public static Dictionary<short, int> stackIncTable = new Dictionary<short, int>
-//		{
-//			{ ItemID.CopperBar, 2 },
-//			{ ItemID.TinBar, 2 },
-//			{ ItemID.IronBar, 2 },
-//			{ ItemID.LeadBar, 2 },
-//			{ ItemID.SilverBar, 2 },
-//			{ ItemID.TungstenBar, 2 },
-//			{ ItemID.GoldBar, 3 },
-//			{ ItemID.PlatinumBar, 3 },
-//			{ ItemID.DemoniteBar, 4 },
-//			{ ItemID.CrimtaneBar, 4 },
-//			{ ItemID.MeteoriteBar, 5 },
-//			{ ItemID.HellstoneBar, 5 },
-//			{ ItemID.CobaltBar, 6 },
-//			{ ItemID.PalladiumBar, 6},
-//			{ ItemID.MythrilBar, 7 },
-//			{ ItemID.OrichalcumBar, 7},
-//			{ ItemID.AdamantiteBar, 8},
-//			{ ItemID.TitaniumBar, 8 },
-//			{ ItemID.ChlorophyteBar, 10 },
-//			{ ItemID.SpectreBar, 11 },
-//			{ ItemID.HallowedBar, 9 },
-//			{ ItemID.ShroomiteBar, 12 },
-//			{ ItemID.LunarBar, 13 }
-//		};
-
-//		public override bool CloneNewInstances => false;
-
-//		public override ModItem Clone(Item item)
-//		{
-//			StackUpgrade clone = (StackUpgrade)base.Clone(item);
-//			clone.stackInc = stackInc;
-//			return clone;
-//		}
-
-//		public int stackInc = 1;
-
-//		public override void SetStaticDefaults()
-//		{
-//			DisplayName.SetDefault("Stack Upgrade");
-//			Tooltip.SetDefault("TOOLTIP");
-//		}
-
-//		public override void SetDefaults()
-//		{
-//			item.width = 20;
-//			item.height = 16;
-//			item.maxStack = 1;
-//			item.value = Item.sellPrice(0, 0, 10);
-//		}
-
-//		public override void ModifyTooltips(List<TooltipLine> tooltips)
-//		{
-//			tooltips.FirstOrDefault(x => x.mod == "Terraria" && x.Name == "ItemName")?.ModifyText($"Stack Upgrade (x{stackInc})");
-//			tooltips.FirstOrDefault(x => x.mod == "Terraria" && x.Name == "Tooltip0")?.ModifyText($"Increases barrel's storage {stackInc} times ({(TEBarrel.BaseMax * stackInc).ToString("N0", CultureInfo.InvariantCulture)} items)");
-//		}
-
-//		public override TagCompound Save() => new TagCompound
-//		{
-//			["StackInc"] = stackInc
-//		};
-
-//		public override void Load(TagCompound tag)
-//		{
-//			stackInc = tag.GetInt("StackInc");
-//		}
-
-//		public override void NetSend(BinaryWriter writer) => TagIO.Write(Save(), writer);
-
-//		public override void NetRecieve(BinaryReader reader) => Load(TagIO.Read(reader));
-
-//		public override void AddRecipes()
-//		{
-//			foreach (var kvp in stackIncTable)
-//			{
-//				ModRecipe recipe = new ModRecipe(mod);
-//				recipe.AddIngredient(kvp.Key, 4);
-//				recipe.AddIngredient(mod.ItemType<UpgradeBase>());
-//				recipe.SetResult(this);
-//				recipe.AddRecipe();
-//			}
-//		}
-
-//		public override void OnCraft(Recipe recipe)
-//		{
-//			stackInc = stackIncTable[(short)recipe.requiredItem[0].type];
-//		}
-//	}
-//}
-
-namespace MassStorage.Items.Upgrades
+namespace MassStorage.Items
 {
+	public class Tier1Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 4096;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 1 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.CopperBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.TinBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+		}
+
+	public class Tier2Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 8192;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 2 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.IronBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.LeadBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier3Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 16384;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 3 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.SilverBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.TungstenBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier4Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 32768;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 4 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.GoldBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.PlatinumBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier5Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 65536;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 5 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.MeteoriteBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier6Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 131072;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 6 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.DemoniteBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.CrimtaneBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier7Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 262144;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 7 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.HellstoneBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier8Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 524288;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 8 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.CobaltBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.PalladiumBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier9Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 1048576;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 9 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.MythrilBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.OrichalcumBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier10Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 2097152;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 10 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.AdamantiteBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+
+			recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.TitaniumOre, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier11Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 4194304;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 11 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.HallowedBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier12Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 8388608;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 12 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+
+	public class Tier13Upgrade : BaseUpgrade
+	{
+		public override int Capacity => 16777216;
+
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Tier 13 Upgrade");
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.LunarBar, 7);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
 }

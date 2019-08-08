@@ -1,5 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Tiles;
+using MassStorage.Items.Upgrades;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -33,100 +34,27 @@ namespace MassStorage.Tiles
 			AddMapEntry(Color.Brown, name);
 		}
 
-		//public override void LeftClick(int i, int j)
-		//{
-		//	int ID = mod.GetID<TEBarrel>(i, j);
-		//	if (ID == -1) return;
-
-		//	Main.LocalPlayer.noThrow = 2;
-
-		//	TEBarrel barrel = (TEBarrel)TileEntity.ByID[ID];
-
-		//	if (!barrel.Items[0].IsAir)
-		//	{
-		//		if (Main.keyState.IsKeyDown(Keys.RightShift))
-		//		{
-		//			int count = Math.Min(barrel.Items[0].stack, barrel.Items[0].maxStack);
-		//			Item.NewItem(barrel.Position.ToVector2() * 16, new Vector2(32), barrel.Items[0].type, count);
-		//			barrel.Items[0].stack -= count;
-		//			if (barrel.Items[0].stack <= 0) barrel.Items[0].TurnToAir();
-		//		}
-		//		else
-		//		{
-		//			Item.NewItem(barrel.Position.ToVector2() * 16, new Vector2(32), barrel.Items[0].type);
-		//			barrel.Items[0].stack--;
-		//			if (barrel.Items[0].stack <= 0) barrel.Items[0].TurnToAir();
-		//		}
-
-		//		//barrel.SendUpdate();
-		//	}
-		//}
-
-		//public override void RightClick(int i, int j)
-		//{
-		//	int ID = mod.GetID<TEBarrel>(i, j);
-		//	if (ID == -1) return;
-
-		//	Main.LocalPlayer.noThrow = 2;
-
-		//	TEBarrel barrel = (TEBarrel)TileEntity.ByID[ID];
-
-		//	if (Main.inputText.IsKeyDown(Keys.RightShift))
-		//	{
-		//		if (Main.LocalPlayer.HasItem(barrel.Items[0].type))
-		//		{
-		//			int count = Math.Min(barrel.maxStoredItems - barrel.Items[0].stack, Main.LocalPlayer.CountItem(barrel.Items[0].type));
-		//			Main.LocalPlayer.ConsumeItem(barrel.Items[0].type, count);
-		//			barrel.Items[0].stack += count;
-		//		}
-		//		else mod.HandleUI<BarrelUI>(ID);
-		//	}
-		//	else
-		//	{
-		//		Item item = Utility.HeldItem;
-		//		if (!item.IsAir)
-		//		{
-		//			if (barrel.Items[0].IsAir)
-		//			{
-		//				barrel.Items[0] = item.Clone();
-		//				int count = Math.Min(item.stack, barrel.maxStoredItems);
-		//				if (barrel.Items.Where((x, index) => index > 0 && index < barrel.Items.Count).Any(x => x.type == mod.ItemType<VoidUpgrade>())) item.TurnToAir();
-		//				else
-		//				{
-		//					item.stack -= count;
-		//					if (item.stack <= 0) item.TurnToAir();
-		//				}
-
-		//				barrel.Items[0].stack = count;
-		//			}
-		//			else
-		//			{
-		//				if (barrel.Items[0].type == item.type)
-		//				{
-		//					int count = Math.Min(item.stack, barrel.maxStoredItems - barrel.Items[0].stack);
-		//					if (barrel.Items.Where((x, index) => index > 0 && index < barrel.Items.Count).Any(x => x.type == mod.ItemType<VoidUpgrade>())) item.TurnToAir();
-		//					else
-		//					{
-		//						item.stack -= count;
-		//						if (item.stack <= 0) item.TurnToAir();
-		//					}
-
-		//					barrel.Items[0].stack += count;
-		//				}
-		//			}
-		//		}
-		//		else mod.HandleUI<BarrelUI>(ID);
-		//	}
-
-		//	//barrel.SendUpdate();
-		//}
-
 		public override void RightClick(int i, int j)
 		{
 			TileEntities.Barrel barrel = Utility.GetTileEntity<TileEntities.Barrel>(i, j);
 			if (barrel == null) return;
 
-			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(barrel);
+			ref Item heldItem = ref Main.LocalPlayer.GetHeldItem();
+
+			// todo: also has to check if the new capacity isn't smaller than current stack size
+			if (heldItem.modItem is BaseUpgrade && heldItem.type != barrel.UpgradeItem.type)
+			{
+				if (!barrel.UpgradeItem.IsAir) Item.NewItem(i * 16, j * 16, 32, 32, barrel.UpgradeItem.type);
+
+				barrel.UpgradeItem.SetDefaults(heldItem.type);
+				if (--heldItem.stack <= 0) heldItem.TurnToAir();
+			}
+			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(barrel);
+		}
+
+		public override void LeftClick(int i, int j)
+		{
+			Main.NewText("bonkers");
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
@@ -145,6 +73,7 @@ namespace MassStorage.Tiles
 			nextSpecialDrawIndex++;
 		}
 
+		// todo: draw the outline according to barrel tier
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			TileEntities.Barrel barrel = Utility.GetTileEntity<TileEntities.Barrel>(i, j);
