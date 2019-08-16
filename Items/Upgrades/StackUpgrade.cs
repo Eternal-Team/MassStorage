@@ -25,7 +25,7 @@ namespace MassStorage.Items
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
-		}
+	}
 
 	public class Tier2Upgrade : BaseUpgrade
 	{

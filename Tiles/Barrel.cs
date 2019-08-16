@@ -41,8 +41,7 @@ namespace MassStorage.Tiles
 
 			ref Item heldItem = ref Main.LocalPlayer.GetHeldItem();
 
-			// todo: also has to check if the new capacity isn't smaller than current stack size
-			if (heldItem.modItem is BaseUpgrade && heldItem.type != barrel.UpgradeItem.type)
+			if (heldItem.modItem is BaseUpgrade upgrade && heldItem.type != barrel.UpgradeItem.type && barrel.Handler.GetItemInSlot(0).stack <= upgrade.Capacity)
 			{
 				if (!barrel.UpgradeItem.IsAir) Item.NewItem(i * 16, j * 16, 32, 32, barrel.UpgradeItem.type);
 
@@ -50,11 +49,6 @@ namespace MassStorage.Tiles
 				if (--heldItem.stack <= 0) heldItem.TurnToAir();
 			}
 			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(barrel);
-		}
-
-		public override void LeftClick(int i, int j)
-		{
-			Main.NewText("bonkers");
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
